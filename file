@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>2-Digit Multiplication Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #problem {
+      font-size: 2em;
+      margin: 20px;
+    }
+    #answer {
+      font-size: 1.5em;
+      color: green;
+      margin: 20px;
+    }
+    #timer {
+      font-size: 1.5em;
+      color: red;
+      margin: 20px;
+    }
+    input[type=number] {
+      width: 60px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>2-Digit × 2-Digit Multiplication Timer</h1>
+
+  <div>
+    <label for="timeInput">Set time (seconds): </label>
+    <input type="number" id="timeInput" value="30" min="1">
+    <button onclick="startChallenge()">Start</button>
+  </div>
+
+  <div id="problem"></div>
+  <div id="timer"></div>
+  <div id="answer"></div>
+
+  <script>
+    let timerInterval;
+
+    function generateProblem() {
+      const num1 = Math.floor(Math.random() * 90) + 10; // 10 to 99
+      const num2 = Math.floor(Math.random() * 90) + 10;
+      return { num1, num2, product: num1 * num2 };
+    }
+
+    function startChallenge() {
+      clearInterval(timerInterval);
+      document.getElementById("answer").textContent = "";
+
+      const time = parseInt(document.getElementById("timeInput").value);
+      if (isNaN(time) || time < 1) {
+        alert("Please enter a valid number of seconds.");
+        return;
+      }
+
+      const problem = generateProblem();
+      document.getElementById("problem").textContent = `${problem.num1} × ${problem.num2}`;
+
+      let remainingTime = time;
+      document.getElementById("timer").textContent = `Time left: ${remainingTime}s`;
+
+      timerInterval = setInterval(() => {
+        remainingTime--;
+        document.getElementById("timer").textContent = `Time left: ${remainingTime}s`;
+
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById("answer").textContent = `Answer: ${problem.product}`;
+          document.getElementById("timer").textContent = "Time's up!";
+        }
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>
